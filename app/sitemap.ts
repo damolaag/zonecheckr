@@ -7,9 +7,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "",
     "/tools",
     "/about",
+    "/contact",
     "/privacy",
     "/terms",
-    ...tools.filter((tool) => tool.status === "live").map((tool) => `/tools/${tool.slug}`),
+    ...tools
+      .filter((tool) => tool.status === "live")
+      .map((tool) => `/tools/${tool.slug}`),
     "/guides/dns-records-explained",
   ];
 
@@ -17,6 +20,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${siteConfig.url}${route}`,
     lastModified: new Date(),
     changeFrequency: route === "" ? "weekly" : "monthly",
-    priority: route === "" ? 1 : route === "/tools" ? 0.9 : 0.8,
+    priority:
+      route === ""
+        ? 1
+        : route === "/tools"
+          ? 0.9
+          : route === "/contact"
+            ? 0.7
+            : 0.8,
   }));
 }
