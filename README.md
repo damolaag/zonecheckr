@@ -25,6 +25,7 @@ Set `NEXT_PUBLIC_SITE_URL=https://zonecheckr.com` and deploy to Vercel. Add `zon
 - Ad boxes are placeholders. Do not insert AdSense code until the site has enough original content and the AdSense account/site is approved.
 - The SSL endpoint blocks private/local targets to reduce SSRF risk.
 - The propagation checker compares major public resolvers; it is not a geographic probe network.
+<<<<<<< HEAD
 
 ## ZoneCheckr v3 additions
 
@@ -57,3 +58,5 @@ Then test:
 - `http://localhost:3000/tools/dns-lookup`
 - `http://localhost:3000/tools/dns-propagation`
 - the Light/Dark switch in the header.
+=======
+>>>>>>> d7d9131fad58988783ff8795695b7ef30e962270

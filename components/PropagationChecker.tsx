@@ -1,16 +1,31 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+<<<<<<< HEAD
 import { PropagationMap, type PropagationPoint } from "@/components/PropagationMap";
+=======
+
+type ResolverResult = {
+  resolver: string;
+  status: number | null;
+  answers: string[];
+  error?: string;
+};
+>>>>>>> d7d9131fad58988783ff8795695b7ef30e962270
 
 type PropagationResponse = {
   name: string;
   type: string;
+<<<<<<< HEAD
   expected: string | null;
   consistent: boolean;
   consensusAnswers: string[];
   provider: string;
   results: PropagationPoint[];
+=======
+  consistent: boolean;
+  results: ResolverResult[];
+>>>>>>> d7d9131fad58988783ff8795695b7ef30e962270
   error?: string;
 };
 
@@ -19,7 +34,10 @@ const recordTypes = ["A", "AAAA", "CNAME", "MX", "NS", "TXT"] as const;
 export function PropagationChecker() {
   const [domain, setDomain] = useState("");
   const [recordType, setRecordType] = useState<(typeof recordTypes)[number]>("A");
+<<<<<<< HEAD
   const [expectedValue, setExpectedValue] = useState("");
+=======
+>>>>>>> d7d9131fad58988783ff8795695b7ef30e962270
   const [result, setResult] = useState<PropagationResponse | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,9 +55,13 @@ export function PropagationChecker() {
 
     setLoading(true);
     try {
+<<<<<<< HEAD
       const params = new URLSearchParams({ name: value, type: recordType });
       if (expectedValue.trim()) params.set("expected", expectedValue.trim());
       const response = await fetch(`/api/dns-propagation?${params.toString()}`, { cache: "no-store" });
+=======
+      const response = await fetch(`/api/dns-propagation?name=${encodeURIComponent(value)}&type=${recordType}`);
+>>>>>>> d7d9131fad58988783ff8795695b7ef30e962270
       const data: PropagationResponse = await response.json();
       if (!response.ok) throw new Error(data.error || "The propagation check failed.");
       setResult(data);
@@ -51,10 +73,17 @@ export function PropagationChecker() {
   }
 
   return (
+<<<<<<< HEAD
     <div className="lookup-panel propagation-panel">
       <form className="lookup-form" onSubmit={handleSubmit}>
         <label htmlFor="propagation-domain">Domain name</label>
         <div className="lookup-row propagation-search-row">
+=======
+    <div className="lookup-panel">
+      <form className="lookup-form" onSubmit={handleSubmit}>
+        <label htmlFor="propagation-domain">Domain name</label>
+        <div className="lookup-row">
+>>>>>>> d7d9131fad58988783ff8795695b7ef30e962270
           <input
             id="propagation-domain"
             value={domain}
@@ -65,6 +94,7 @@ export function PropagationChecker() {
           <select value={recordType} onChange={(event) => setRecordType(event.target.value as (typeof recordTypes)[number])}>
             {recordTypes.map((type) => <option value={type} key={type}>{type}</option>)}
           </select>
+<<<<<<< HEAD
           <button type="submit" disabled={loading}>{loading ? "Checking worldwide…" : "Check propagation"}</button>
         </div>
 
@@ -78,17 +108,24 @@ export function PropagationChecker() {
             autoComplete="off"
           />
           <p className="field-help">Add the new value after a DNS change so the map can show exactly where that value is visible. Leave blank to compare each region with the global consensus.</p>
+=======
+          <button type="submit" disabled={loading}>{loading ? "Comparing…" : "Check resolvers"}</button>
+>>>>>>> d7d9131fad58988783ff8795695b7ef30e962270
         </div>
       </form>
 
       {error ? <p className="error-message">{error}</p> : null}
 
+<<<<<<< HEAD
       {!result ? <PropagationMap points={[]} loading={loading} expectedValue={expectedValue.trim() || undefined} /> : null}
 
+=======
+>>>>>>> d7d9131fad58988783ff8795695b7ef30e962270
       {result ? (
         <div className="results" aria-live="polite">
           <div className="results-heading">
             <div>
+<<<<<<< HEAD
               <span className="eyebrow">Worldwide propagation</span>
               <h2>{result.consistent ? "Propagation looks consistent" : "DNS answers still differ"}</h2>
             </div>
@@ -127,6 +164,33 @@ export function PropagationChecker() {
           </div>
 
           <p className="tool-note">Checks run from live Globalping probes in multiple countries. Results show what the resolver used by each probe sees at that moment, not a guarantee for every ISP or user in the region.</p>
+=======
+              <span className="eyebrow">Resolver comparison</span>
+              <h2>{result.consistent ? "Answers match" : "Answers differ"}</h2>
+            </div>
+            <span className={`health-pill ${result.consistent ? "healthy" : "warning"}`}>
+              {result.consistent ? "Consistent" : "Check in progress"}
+            </span>
+          </div>
+
+          <div className="resolver-grid">
+            {result.results.map((item) => (
+              <div className="resolver-card" key={item.resolver}>
+                <div className="resolver-card-head">
+                  <strong>{item.resolver}</strong>
+                  <span>DNS {item.status ?? "—"}</span>
+                </div>
+                {item.error ? <p className="error-message compact-error">{item.error}</p> : null}
+                {item.answers.length ? (
+                  <ul className="answer-list">
+                    {item.answers.map((answer, index) => <li key={`${item.resolver}-${index}`}>{answer}</li>)}
+                  </ul>
+                ) : !item.error ? <p className="muted-copy">No records returned.</p> : null}
+              </div>
+            ))}
+          </div>
+          <p className="tool-note">This compares major public recursive resolvers. It is not a country-by-country probe network.</p>
+>>>>>>> d7d9131fad58988783ff8795695b7ef30e962270
         </div>
       ) : null}
     </div>

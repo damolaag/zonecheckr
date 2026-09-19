@@ -5,7 +5,11 @@ import { FormEvent, useState } from "react";
 type DnsAnswer = {
   name: string;
   type: number;
+<<<<<<< HEAD
   TTL: number | null;
+=======
+  TTL: number;
+>>>>>>> d7d9131fad58988783ff8795695b7ef30e962270
   data: string;
 };
 
@@ -16,7 +20,11 @@ type LookupResponse = {
   error?: string;
 };
 
+<<<<<<< HEAD
 const recordTypes = ["A", "AAAA", "CNAME", "MX", "NS", "TXT", "SOA", "CAA"] as const;
+=======
+const recordTypes = ["A", "AAAA", "CNAME", "MX", "NS", "TXT"] as const;
+>>>>>>> d7d9131fad58988783ff8795695b7ef30e962270
 
 export function DnsLookup() {
   const [domain, setDomain] = useState("");
@@ -115,7 +123,11 @@ export function DnsLookup() {
                   {result.answer.map((record, index) => (
                     <tr key={`${record.name}-${record.data}-${index}`}>
                       <td>{record.name}</td>
+<<<<<<< HEAD
                       <td>{record.TTL == null ? "—" : `${record.TTL}s`}</td>
+=======
+                      <td>{record.TTL}s</td>
+>>>>>>> d7d9131fad58988783ff8795695b7ef30e962270
                       <td className="record-value">{record.data}</td>
                     </tr>
                   ))}

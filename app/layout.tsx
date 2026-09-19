@@ -25,6 +25,7 @@ export const metadata: Metadata = {
   },
 };
 
+<<<<<<< HEAD
 const themeScript = `
 (function () {
   try {
@@ -45,6 +46,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
+=======
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html lang="en">
+>>>>>>> d7d9131fad58988783ff8795695b7ef30e962270
       <body>
         <Header />
         <main>{children}</main>
