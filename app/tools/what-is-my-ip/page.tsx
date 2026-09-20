@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { IpCard } from "@/components/IpCard";
+import { AdSlot } from "@/components/AdSlot";
 
 export const metadata: Metadata = {
   title: "What's My IP? — Find Your Public IP Address",
@@ -20,7 +21,7 @@ export default async function WhatIsMyIpPage() {
         <p>Quickly see the public IP address your browser is presenting to this website.</p>
       </div>
       <IpCard ip={ip} />
-      <div className="ad-placeholder"><span>Advertisement</span></div>
+      <AdSlot slotId="tool-mid-content" />
       <article className="article-card">
         <h2>Why can your IP address change?</h2>
         <p>Your ISP can assign a dynamic address, and VPNs, corporate gateways, mobile networks and proxies can make websites see a different public IP than the address used inside your home or office network.</p>

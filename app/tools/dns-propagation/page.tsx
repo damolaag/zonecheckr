@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PropagationChecker } from "@/components/PropagationChecker";
+import { AdSlot } from "@/components/AdSlot";
 
 export const metadata: Metadata = {
   title: "DNS Propagation Checker — Global DNS Map",
@@ -15,7 +16,7 @@ export default function DnsPropagationPage() {
         <p>Run live DNS checks from multiple countries and see where your new record is already visible on the map.</p>
       </div>
       <PropagationChecker />
-      <div className="ad-placeholder"><span>Advertisement</span></div>
+      <AdSlot slotId="tool-mid-content" />
       <article className="article-card">
         <h2>What does DNS propagation mean?</h2>
         <p>When a DNS record changes, recursive resolvers can keep the previous value until its cached TTL expires. During that window, users in different networks can receive different DNS answers.</p>

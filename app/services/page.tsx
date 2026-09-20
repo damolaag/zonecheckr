@@ -1,0 +1,14 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+export const metadata: Metadata = { title: "Domain Technical Support", description: "Get technical help with domains, DNS, SSL, email authentication, hosting connections, Cloudflare, redirects and domain migrations." };
+const services = [
+  ["Domain & registrar", "Nameservers, registration configuration, domain verification, transfers, renewals and registrar-related connection issues."],
+  ["DNS configuration", "A, AAAA, CNAME, MX, TXT, NS, SOA, CAA, TTL, propagation, DNSSEC, subdomains and conflicting records."],
+  ["Email & deliverability", "MX routing, SPF, DKIM and DMARC setup, business email authentication, verification records and domain-related delivery issues."],
+  ["SSL & HTTPS", "Certificate and HTTPS problems, expiry and chain issues, CAA, redirects and domain security configuration."],
+  ["Hosting & website connections", "Connect domains to hosting platforms, troubleshoot origin and HTTP issues, configure www/non-www and resolve migration problems."],
+  ["Cloudflare & CDN", "DNS, proxy, SSL mode, origin connectivity, caching and redirect configuration."],
+  ["Subdomains & redirects", "Create and troubleshoot subdomains, URL redirects, application domains and service-specific records."],
+  ["Domain migrations", "Plan and troubleshoot DNS, hosting, email and SSL changes when moving a domain between providers."],
+];
+export default function ServicesPage(){return <div className="container guide-page"><header className="guide-header"><span className="eyebrow">Domain technical support</span><h1>Technical help across your entire domain setup.</h1><p>ZoneCheckr helps diagnose and resolve the systems connected to your domain — from registrar and DNS configuration to email, SSL, hosting, Cloudflare and migrations.</p><div className="hero-actions"><a href="mailto:support@zonecheckr.com?subject=ZoneCheckr%20Technical%20Help" className="button button-primary">Request Technical Help</a><Link href="/tools/domain-health" className="button button-secondary">Run Domain Health Check</Link></div></header><section className="service-grid">{services.map(([title,description])=><article className="service-card" key={title}><h2>{title}</h2><p>{description}</p></article>)}</section><section className="article-card prose"><h2>Start with a diagnosis</h2><p>If you are not sure what is wrong, run the Domain Health Checker first. Include the domain, the problem you are seeing, any recent DNS or hosting changes and relevant error messages when contacting support.</p><div className="article-cta"><h2>Need someone to investigate?</h2><p>Email ZoneCheckr with the domain and a short description of the issue. Never send passwords, API keys or other account credentials by email.</p><a href="mailto:support@zonecheckr.com?subject=ZoneCheckr%20Technical%20Help" className="button button-primary">support@zonecheckr.com</a></div></section></div>}

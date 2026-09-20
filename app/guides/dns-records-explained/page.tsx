@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AdSlot } from "@/components/AdSlot";
 
 export const metadata: Metadata = {
   title: "DNS Records Explained: A, AAAA, CNAME, MX, TXT & NS",
@@ -31,6 +32,8 @@ export default function DnsRecordsGuide() {
           An AAAA record serves the same basic purpose as an A record, but points to an IPv6
           address instead of IPv4.
         </p>
+
+        <AdSlot slotId="guide-mid-content" className="article-ad-slot" />
 
         <h2>CNAME record</h2>
         <p>
