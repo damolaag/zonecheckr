@@ -1,30 +1,41 @@
+"use client";
+
 type AdSlotProps = {
-  slotId: string;
   className?: string;
+  label?: boolean;
 };
 
-/**
- * Responsive GAM-ready ad container.
- *
- * The actual GAM tag will be inserted here once the ad unit/tag is supplied.
- * Keeping the markup centralized means every placement can use the same
- * responsive creative without duplicating ad code across pages.
- */
-export function AdSlot({ slotId, className = "" }: AdSlotProps) {
+export function AdSlot({ className = "", label = true }: AdSlotProps) {
   return (
-    <aside
-      className={`responsive-ad-slot ${className}`.trim()}
-      aria-label="Advertisement"
-      data-ad-slot={slotId}
-    >
-      <span className="ad-label">Advertisement</span>
-      <div className="responsive-ad-frame" id={slotId}>
-        <div className="ad-placeholder-copy" aria-hidden="true">
-          <strong>Ad space</strong>
-          <span className="ad-size-desktop">970×90 / 728×90</span>
-          <span className="ad-size-mobile">300×250</span>
+    <div className={`gam-ad-slot ${className}`} aria-label="Advertisement">
+      <div className="gam-ad-inner">
+        {label && <span className="gam-ad-label">Advertisement</span>}
+
+        {/*
+          Google Ad Manager tag will replace the placeholder below.
+
+          Desktop supported sizes:
+          970x90
+          728x90
+          300x250
+          300x100
+
+          Mobile supported sizes:
+          320x50
+          300x250
+          300x100
+
+          Do not force a fixed height because the GAM tag
+          can return creatives with different heights.
+        */}
+
+        <div
+          className="gam-ad-placeholder"
+          data-ad-slot="zonecheckr-responsive"
+        >
+          <span>Advertisement</span>
         </div>
       </div>
-    </aside>
+    </div>
   );
 }
