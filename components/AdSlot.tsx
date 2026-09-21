@@ -3,9 +3,14 @@
 type AdSlotProps = {
   className?: string;
   label?: boolean;
+  slotId?: string;
 };
 
-export function AdSlot({ className = "", label = true }: AdSlotProps) {
+export function AdSlot({
+  className = "",
+  label = true,
+  slotId = "zonecheckr-responsive",
+}: AdSlotProps) {
   return (
     <div className={`gam-ad-slot ${className}`} aria-label="Advertisement">
       <div className="gam-ad-inner">
@@ -25,14 +30,11 @@ export function AdSlot({ className = "", label = true }: AdSlotProps) {
           300x250
           300x100
 
-          Do not force a fixed height because the GAM tag
-          can return creatives with different heights.
+          The partner GAM tag can determine the final creative size.
+          Do not force a fixed height on this container.
         */}
 
-        <div
-          className="gam-ad-placeholder"
-          data-ad-slot="zonecheckr-responsive"
-        >
+        <div id={slotId} className="gam-ad-placeholder" data-ad-slot={slotId}>
           <span>Advertisement</span>
         </div>
       </div>
