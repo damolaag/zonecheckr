@@ -38,7 +38,7 @@ export default function Home() {
       ====================================================== */}
       <section className="homepage-top-ad-section">
         <div className="container">
-          <AdSlot className="homepage-top-ad" />
+          <AdSlot slotId="homepage-top" className="homepage-top-ad" />
         </div>
       </section>
 
@@ -138,12 +138,11 @@ export default function Home() {
       </section>
 
       {/* ======================================================
-          LOWER GAM AD SLOT
-          Existing homepage placement restored below the hero.
+          SECOND HOMEPAGE GAM AD SLOT — BANNER 2
       ====================================================== */}
       <section className="homepage-lower-ad-section">
         <div className="container">
-          <AdSlot className="homepage-lower-ad" />
+          <AdSlot slotId="homepage-lower" className="homepage-lower-ad" />
         </div>
       </section>
 
@@ -156,14 +155,12 @@ export default function Home() {
             <div>
               <span className="eyebrow">Domain toolbox</span>
 
-              <h2>
-                Diagnose the problem with the right tool.
-              </h2>
+              <h2>Diagnose the problem with the right tool.</h2>
             </div>
 
             <p>
-              Check DNS, email authentication, SSL, domain records,
-              propagation, HTTP responses and overall domain health.
+              Check DNS, email authentication, SSL, domain records, propagation,
+              HTTP responses and overall domain health.
             </p>
           </div>
 
@@ -174,9 +171,7 @@ export default function Home() {
                 title={tool.title}
                 description={tool.description}
                 href={
-                  tool.status === "live"
-                    ? getToolHref(tool.slug)
-                    : undefined
+                  tool.status === "live" ? getToolHref(tool.slug) : undefined
                 }
                 status={tool.status}
               />
@@ -197,17 +192,13 @@ export default function Home() {
       <section className="section section-soft">
         <div className="container feature-split">
           <div>
-            <span className="eyebrow">
-              One domain. Multiple checks.
-            </span>
+            <span className="eyebrow">One domain. Multiple checks.</span>
 
-            <h2>
-              Start with a complete domain health check.
-            </h2>
+            <h2>Start with a complete domain health check.</h2>
 
             <p>
-              Not sure which tool you need? ZoneCheckr can inspect the
-              major technical components behind your domain in one place.
+              Not sure which tool you need? ZoneCheckr can inspect the major
+              technical components behind your domain in one place.
             </p>
 
             <div className="feature-check-list">
@@ -219,10 +210,7 @@ export default function Home() {
               <span>✓ HTTPS response</span>
             </div>
 
-            <Link
-              href="/tools/domain-health"
-              className="button button-primary"
-            >
+            <Link href="/tools/domain-health" className="button button-primary">
               Run Domain Health Check
             </Link>
           </div>
@@ -230,16 +218,12 @@ export default function Home() {
           <div className="health-preview-card">
             <div className="health-preview-heading">
               <div>
-                <span className="health-preview-label">
-                  DOMAIN HEALTH
-                </span>
+                <span className="health-preview-label">DOMAIN HEALTH</span>
 
                 <strong>example.com</strong>
               </div>
 
-              <span className="health-preview-badge">
-                Scan complete
-              </span>
+              <span className="health-preview-badge">Scan complete</span>
             </div>
 
             <div className="health-preview-results">
@@ -284,13 +268,9 @@ export default function Home() {
         <div className="container">
           <div className="section-heading">
             <div>
-              <span className="eyebrow">
-                Troubleshooting guides
-              </span>
+              <span className="eyebrow">Troubleshooting guides</span>
 
-              <h2>
-                Understand what went wrong — and how to fix it.
-              </h2>
+              <h2>Understand what went wrong — and how to fix it.</h2>
             </div>
 
             <p>
@@ -301,22 +281,14 @@ export default function Home() {
 
           <div className="guide-grid">
             {featuredGuides.map((guide) => (
-              <article
-                className="guide-card"
-                key={guide.href}
-              >
-                <span className="guide-card-label">
-                  Guide
-                </span>
+              <article className="guide-card" key={guide.href}>
+                <span className="guide-card-label">Guide</span>
 
                 <h3>{guide.title}</h3>
 
                 <p>{guide.description}</p>
 
-                <Link
-                  href={guide.href}
-                  className="text-link"
-                >
+                <Link href={guide.href} className="text-link">
                   Read guide →
                 </Link>
               </article>
@@ -324,10 +296,7 @@ export default function Home() {
           </div>
 
           <div className="section-action">
-            <Link
-              href="/guides"
-              className="button button-secondary"
-            >
+            <Link href="/guides" className="button button-secondary">
               Browse all guides
             </Link>
           </div>
@@ -362,18 +331,14 @@ export default function Home() {
       <section className="section">
         <div className="container support-cta">
           <div className="support-cta-copy">
-            <span className="eyebrow">
-              Technical domain support
-            </span>
+            <span className="eyebrow">Technical domain support</span>
 
-            <h2>
-              Found the problem but need help fixing it?
-            </h2>
+            <h2>Found the problem but need help fixing it?</h2>
 
             <p>
-              ZoneCheckr can help with domain and registrar configuration,
-              DNS, SSL, email authentication, hosting connections,
-              Cloudflare, subdomains, redirects and domain migrations.
+              ZoneCheckr can help with domain and registrar configuration, DNS,
+              SSL, email authentication, hosting connections, Cloudflare,
+              subdomains, redirects and domain migrations.
             </p>
 
             <div className="support-tags">
@@ -387,10 +352,7 @@ export default function Home() {
           </div>
 
           <div className="support-cta-actions">
-            <Link
-              href="/services"
-              className="button button-primary"
-            >
+            <Link href="/services" className="button button-primary">
               Get Technical Help
             </Link>
 
