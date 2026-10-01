@@ -3,7 +3,3 @@ node_modules/
 .DS_Store
 .env
 .env.local
-zonecheckr-v8-deploy/
-/dist/
-.vinext/
-.cloudflare/

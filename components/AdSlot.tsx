@@ -18,6 +18,7 @@ const SLOT_ID_MAP: Record<string, string> = {
   "homepage-lower": "div-gpt-ad-1790180731446-0",
   "tool-mid-content": "div-gpt-ad-1790006153357-0",
   "guide-mid-content": "div-gpt-ad-1790006153357-0",
+  "bottom-anchor": "div-gpt-ad-1790006153357-0",
 };
 
 type GptWindow = Window & {

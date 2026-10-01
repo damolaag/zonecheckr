@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { BottomAnchorAd } from "@/components/BottomAnchorAd";
 import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -29,13 +30,12 @@ const themeScript = `
 (function () {
   try {
     var saved = localStorage.getItem('zonecheckr-theme');
-    var preferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-    var theme = saved === 'light' || saved === 'dark' ? saved : preferred;
+    var theme = saved === 'light' || saved === 'dark' ? saved : 'light';
     document.documentElement.dataset.theme = theme;
     document.documentElement.style.colorScheme = theme;
   } catch (_) {
-    document.documentElement.dataset.theme = 'dark';
-    document.documentElement.style.colorScheme = 'dark';
+    document.documentElement.dataset.theme = 'light';
+    document.documentElement.style.colorScheme = 'light';
   }
 })();`;
 
@@ -91,38 +91,56 @@ window.gptTrackingEngine = window.gptTrackingEngine || {
 };
 
 window.googletag.cmd.push(function() {
+  // Banner 1: immediately below the header. Keep this compact on every viewport
+  // so the first useful ZoneCheckr content remains visible above the fold.
   var mappingTop = window.googletag
     .sizeMapping()
-    .addSize(
-      [1024, 0],
-      [[320, 50], [320, 100], [970, 90], 'fluid', [728, 90], [960, 90], [300, 50], [300, 100], [970, 66], [300, 250]]
-    )
-    .addSize([768, 0], [[728, 90], [300, 250], [300, 100], 'fluid'])
-    .addSize([0, 0], [[320, 50], [300, 250], [300, 100], [250, 250], [200, 200], 'fluid'])
+    .addSize([1024, 0], [[970, 90], [960, 90], [728, 90], [970, 66], [320, 100], [300, 100], [320, 50], [300, 50]])
+    .addSize([768, 0], [[728, 90], [320, 100], [300, 100], [320, 50], [300, 50]])
+    .addSize([0, 0], [[320, 50], [320, 100], [300, 100], [300, 50]])
+    .build();
+
+  // Banner 2: lower homepage placement can accept larger display formats.
+  var mappingBody = window.googletag
+    .sizeMapping()
+    .addSize([1024, 0], [[970, 90], [728, 90], [300, 250], [300, 100], [320, 100], [320, 50], [300, 50], 'fluid'])
+    .addSize([768, 0], [[728, 90], [300, 250], [300, 100], [320, 100], [320, 50], [300, 50], 'fluid'])
+    .addSize([0, 0], [[300, 250], [320, 100], [320, 50], [300, 100], [300, 50], 'fluid'])
+    .build();
+
+  // Banner 3: partner-approved bottom anchor. Keep it compact so it does not
+  // cover a large portion of the utility UI on desktop or mobile.
+  var mappingAnchor = window.googletag
+    .sizeMapping()
+    .addSize([768, 0], [[728, 90], [320, 100], [320, 50], [300, 100], [300, 50]])
+    .addSize([0, 0], [[320, 100], [320, 50], [300, 100], [300, 50]])
     .build();
 
   var slotsToRegister = [
     {
-      path: '/23043164651/zonecheckr_banner2',
-      sizes: [[970, 90], [300, 250], 'fluid', [250, 250], [200, 200], [728, 90], [300, 100], [320, 50], [300, 50], [320, 100]],
-      div: 'div-gpt-ad-1790180731446-0'
+      path: '/23043164651/zonecheckr_banner1',
+      sizes: [[970, 90], [960, 90], [728, 90], [970, 66], [320, 100], [320, 50], [300, 100], [300, 50]],
+      div: 'div-gpt-ad-1790006377572-0',
+      mapping: mappingTop
     },
     {
-      path: '/23043164651/zonecheckr_banner1',
-      sizes: [[320, 50], [320, 100], [200, 200], [970, 90], 'fluid', [300, 250], [336, 280], [728, 90], [960, 90], [300, 50], [300, 100], [970, 66]],
-      div: 'div-gpt-ad-1790006377572-0'
+      path: '/23043164651/zonecheckr_banner2',
+      sizes: [[970, 90], [728, 90], [300, 250], [300, 100], [320, 100], [320, 50], [300, 50], 'fluid'],
+      div: 'div-gpt-ad-1790180731446-0',
+      mapping: mappingBody
     },
     {
       path: '/23043164651/zonecheckr_banner3',
-      sizes: [[728, 90], [250, 250], [300, 250], [320, 50], [200, 200], [320, 100], [300, 50], [300, 100]],
-      div: 'div-gpt-ad-1790006153357-0'
+      sizes: [[728, 90], [320, 100], [320, 50], [300, 100], [300, 50]],
+      div: 'div-gpt-ad-1790006153357-0',
+      mapping: mappingAnchor
     }
   ];
 
   slotsToRegister.forEach(function(config) {
     var slot = window.googletag
       .defineSlot(config.path, config.sizes, config.div)
-      .defineSizeMapping(mappingTop)
+      .defineSizeMapping(config.mapping)
       .addService(window.googletag.pubads());
 
     if (slot) {
@@ -133,14 +151,7 @@ window.googletag.cmd.push(function() {
 
   window.googletag.pubads().addEventListener('slotRenderEnded', function(event) {
     window.gptTrackingEngine.isProcessingRefresh = false;
-    console.log(
-      '[GPT] Render ended:',
-      event.slot.getSlotElementId(),
-      'empty:',
-      event.isEmpty,
-      'size:',
-      event.size
-    );
+    console.log('[GPT] Render ended:', event.slot.getSlotElementId(), 'empty:', event.isEmpty, 'size:', event.size);
   });
 
   window.googletag.pubads().addEventListener('impressionViewable', function(event) {
@@ -148,11 +159,9 @@ window.googletag.cmd.push(function() {
   });
 
   var visibilityTimers = {};
-
   window.googletag.pubads().addEventListener('slotVisibilityChanged', function(event) {
     var slotId = event.slot.getSlotElementId();
     if (visibilityTimers[slotId]) clearTimeout(visibilityTimers[slotId]);
-
     visibilityTimers[slotId] = setTimeout(function() {
       console.log('[GPT] Visibility:', slotId, event.inViewPercentage + '%');
     }, 150);
@@ -170,22 +179,18 @@ window.googletag.cmd.push(function() {
   window.googletag.enableServices();
 
   if ('IntersectionObserver' in window) {
-    window.gptTrackingEngine.viewabilityObserver = new IntersectionObserver(
-      function(entries) {
-        entries.forEach(function(entry) {
-          var id = entry.target.id;
-
-          if (entry.intersectionRatio >= 0.5) {
-            if (!window.gptTrackingEngine.viewableSlotTracker[id]) {
-              window.gptTrackingEngine.viewableSlotTracker[id] = Date.now();
-            }
-          } else {
-            window.gptTrackingEngine.viewableSlotTracker[id] = null;
+    window.gptTrackingEngine.viewabilityObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        var id = entry.target.id;
+        if (entry.intersectionRatio >= 0.5) {
+          if (!window.gptTrackingEngine.viewableSlotTracker[id]) {
+            window.gptTrackingEngine.viewableSlotTracker[id] = Date.now();
           }
-        });
-      },
-      { threshold: [0, 0.5, 1] }
-    );
+        } else {
+          window.gptTrackingEngine.viewableSlotTracker[id] = null;
+        }
+      });
+    }, { threshold: [0, 0.5, 1] });
   }
 
   if (!window.gptTrackingEngine.refreshTimer) {
@@ -202,9 +207,7 @@ window.googletag.cmd.push(function() {
 
       if (slotsEligibleForRefresh.length > 0) {
         window.gptTrackingEngine.isProcessingRefresh = true;
-        window.googletag.pubads().refresh(slotsEligibleForRefresh, {
-          changeCorrelator: false
-        });
+        window.googletag.pubads().refresh(slotsEligibleForRefresh, { changeCorrelator: false });
       }
     }, window.gptTrackingEngine.refreshIntervalMs);
   }
@@ -216,7 +219,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html lang="en" data-theme="light" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script dangerouslySetInnerHTML={{ __html: consentScript }} />
@@ -231,6 +234,7 @@ export default function RootLayout({
         <Header />
         <main>{children}</main>
         <Footer />
+        <BottomAnchorAd />
       </body>
     </html>
   );

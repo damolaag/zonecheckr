@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { AdSlot } from "@/components/AdSlot";
 import { ToolCard } from "@/components/ToolCard";
-import { siteConfig } from "@/lib/site";
 import { getToolHref, tools } from "@/lib/tools";
 
 const liveTools = tools.filter((tool) => tool.status === "live");
@@ -32,9 +31,9 @@ export default function Home() {
     <>
       {/* ======================================================
           TOP GAM AD SLOT
-          Supports:
-          Desktop: 970x90, 728x90, 300x250, 300x100
-          Mobile: 300x250, 320x50, 300x100
+          Compact placement to protect above-the-fold usability.
+          Desktop: 970x90, 960x90, 728x90, 970x66, 320x100, 300x100, 320x50, 300x50
+          Mobile: 320x100, 320x50, 300x100, 300x50
       ====================================================== */}
       <section className="homepage-top-ad-section">
         <div className="container">
@@ -48,22 +47,14 @@ export default function Home() {
       <section className="hero">
         <div className="container hero-inner">
           <div className="hero-copy">
-            <span className="eyebrow">
-              Domain diagnostics & troubleshooting
-            </span>
+            <span className="eyebrow">Free domain diagnostics</span>
 
-            <h1>
-              Check your domain.
-              <br />
-              Find the problem.
-              <br />
-              Fix it faster.
-            </h1>
+            <h1>Check your domain health in seconds.</h1>
 
             <p className="hero-description">
-              Diagnose DNS, SSL, email authentication, domain and website
-              connection issues with free tools and clear troubleshooting
-              guidance.
+              Diagnose DNS, SSL, email authentication and website connection
+              issues from one place. Start with a full health check or choose a
+              specific tool.
             </p>
 
             <div className="hero-actions">

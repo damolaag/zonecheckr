@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DnsLookup } from "@/components/DnsLookup";
-import { AdSlot } from "@/components/AdSlot";
 
 export const metadata: Metadata = {
   title: "DNS Lookup — Check A, MX, TXT, NS & CNAME Records",
@@ -23,7 +22,7 @@ export default function DnsLookupPage() {
 
       <DnsLookup />
 
-      <AdSlot slotId="tool-mid-content" />
+      
 
       <article className="article-card">
         <h2>What does a DNS lookup show?</h2>

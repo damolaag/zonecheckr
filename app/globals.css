@@ -2122,3 +2122,390 @@ html[data-theme="light"] .console-bar span {
     min-height: 50px;
   }
 }
+
+/* ==========================================================
+   September 2026 UI refinement
+   ========================================================== */
+
+/* Light is the default visual baseline. Saved user preference still wins. */
+html:not([data-theme="dark"]) {
+  color-scheme: light;
+}
+
+/* Header: keep the desktop navigation, add a compact mobile menu. */
+.header-inner {
+  position: relative;
+}
+.mobile-menu-toggle,
+.mobile-nav {
+  display: none;
+}
+.mobile-menu-toggle {
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+  color: var(--text);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+}
+.mobile-menu-toggle span {
+  width: 18px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+.mobile-menu-toggle.is-open span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+.mobile-menu-toggle.is-open span:nth-child(2) {
+  opacity: 0;
+}
+.mobile-menu-toggle.is-open span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+.mobile-nav {
+  position: absolute;
+  top: calc(100% + 1px);
+  right: 0;
+  left: 0;
+  z-index: 80;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-top: 0;
+  border-radius: 0 0 16px 16px;
+  background: var(--panel);
+  box-shadow: 0 18px 42px var(--shadow);
+}
+.mobile-nav a {
+  min-height: 48px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 10px;
+  color: var(--text);
+  font-weight: 700;
+}
+.mobile-nav a:hover {
+  background: var(--bg-soft);
+}
+
+/* Ads: clean containers with no decorative borders around real GAM inventory. */
+.homepage-top-ad-section {
+  width: 100%;
+  padding: 12px 0 6px;
+}
+.homepage-lower-ad-section {
+  width: 100%;
+  padding: 18px 0 8px;
+}
+.homepage-top-ad,
+.homepage-lower-ad {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.gam-ad-slot,
+.gam-ad-inner,
+.gam-ad-placeholder {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.gam-ad-inner,
+.gam-ad-placeholder {
+  min-height: 50px;
+}
+.homepage-top-ad .gam-ad-inner,
+.homepage-top-ad .gam-ad-placeholder,
+.homepage-lower-ad .gam-ad-inner,
+.homepage-lower-ad .gam-ad-placeholder {
+  width: 100%;
+  max-width: 970px;
+}
+.gam-ad-label {
+  top: -11px;
+  font-size: 8px;
+  opacity: 0.5;
+}
+
+/* Hero: smaller, clearer and more useful above the fold. */
+.hero {
+  padding: 54px 0 56px;
+}
+.hero-inner {
+  gap: 48px;
+}
+.hero h1,
+.hero-copy h1 {
+  max-width: 760px;
+  margin: 10px 0 18px;
+  font-size: clamp(3rem, 5.2vw, 4.8rem);
+  line-height: 1.01;
+  letter-spacing: -0.055em;
+}
+.hero-description {
+  max-width: 690px;
+  margin-top: 0;
+  font-size: 1.08rem;
+  line-height: 1.58;
+}
+.hero-actions {
+  margin-top: 24px;
+}
+.trust-row {
+  margin-top: 22px;
+}
+.console-body {
+  padding: 34px 30px 38px;
+  gap: 14px;
+}
+
+/* Reduce general page length without making the interface cramped. */
+.section {
+  padding: 64px 0;
+}
+.section-heading {
+  margin-bottom: 28px;
+}
+.tool-card {
+  min-height: 195px;
+  padding: 20px;
+}
+.tool-card h3 {
+  margin-top: 22px;
+}
+.guide-card {
+  min-height: 260px;
+  padding: 24px;
+}
+
+/* Banner 3 is now the site-wide bottom anchor. */
+.bottom-anchor-ad {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  z-index: 100;
+  width: min(100%, 760px);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+.bottom-anchor-label {
+  margin-bottom: 2px;
+  padding: 2px 7px;
+  border-radius: 5px 5px 0 0;
+  background: rgba(246, 249, 252, 0.92);
+  color: #607287;
+  font-size: 8px;
+  line-height: 1.35;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+html[data-theme="dark"] .bottom-anchor-label {
+  background: rgba(7, 17, 31, 0.92);
+  color: #9fb1c5;
+}
+.bottom-anchor-slot {
+  width: 100%;
+  pointer-events: auto;
+}
+.bottom-anchor-slot .gam-ad-inner,
+.bottom-anchor-slot .gam-ad-placeholder {
+  width: 100%;
+  max-width: 728px;
+  min-height: 50px;
+}
+
+@media (max-width: 768px) {
+  .header-inner {
+    min-height: 64px;
+    gap: 10px;
+  }
+  .brand {
+    gap: 8px;
+    font-size: 1.05rem;
+  }
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+  }
+  .header-actions {
+    gap: 8px;
+  }
+  .desktop-nav {
+    display: none;
+  }
+  .mobile-menu-toggle {
+    display: inline-flex;
+  }
+  .mobile-nav.is-open {
+    display: grid;
+  }
+  .theme-switch {
+    min-height: 42px;
+    width: 46px;
+    padding: 0 5px;
+    justify-content: center;
+  }
+  .theme-switch-track {
+    width: 34px;
+  }
+  .theme-switch-text {
+    display: none;
+  }
+
+  .homepage-top-ad-section {
+    padding: 10px 0 4px;
+  }
+  .homepage-lower-ad-section {
+    padding: 12px 0 4px;
+  }
+  .homepage-top-ad .gam-ad-inner,
+  .homepage-top-ad .gam-ad-placeholder,
+  .homepage-lower-ad .gam-ad-inner,
+  .homepage-lower-ad .gam-ad-placeholder {
+    max-width: 320px;
+    min-height: 50px;
+  }
+
+  .hero {
+    padding: 34px 0 42px;
+    background: radial-gradient(circle at 80% 10%, rgba(10, 167, 122, 0.1), transparent 34%);
+  }
+  .hero-inner {
+    display: block;
+  }
+  .hero h1,
+  .hero-copy h1 {
+    margin: 8px 0 14px;
+    max-width: 620px;
+    font-size: clamp(2.55rem, 11vw, 3.55rem);
+    line-height: 1.02;
+    letter-spacing: -0.052em;
+  }
+  .hero-description {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+  .hero-actions {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .hero-actions .button {
+    width: 100%;
+  }
+  .trust-row {
+    margin-top: 18px;
+    gap: 8px 14px;
+    font-size: 0.78rem;
+  }
+  .hero-console {
+    display: none;
+  }
+
+  .section {
+    padding: 48px 0;
+  }
+  .section-heading {
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .section-heading h2 {
+    font-size: clamp(1.85rem, 8vw, 2.55rem);
+  }
+  .section-heading > p {
+    font-size: 0.95rem;
+  }
+
+  /* Utility-first mobile cards: less scrolling, clearer action. */
+  .tool-grid {
+    gap: 10px;
+  }
+  .tool-card {
+    min-height: 0;
+    padding: 17px;
+    border-radius: 14px;
+  }
+  .tool-card h3 {
+    margin: 15px 0 5px;
+    font-size: 1.08rem;
+  }
+  .tool-card p {
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  /* Guides remain visible and readable on small screens. */
+  .guide-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .guide-card {
+    display: flex;
+    min-height: 0;
+    padding: 19px;
+    border-radius: 14px;
+  }
+  .guide-card-label {
+    margin-bottom: 10px;
+  }
+  .guide-card h3 {
+    font-size: 1.12rem;
+  }
+  .guide-card p {
+    margin: 10px 0 16px;
+    font-size: 0.9rem;
+  }
+
+  .feature-split {
+    gap: 28px;
+  }
+  .health-preview-card,
+  .stat-card {
+    padding: 20px;
+  }
+  .support-cta {
+    gap: 24px;
+  }
+
+  .bottom-anchor-ad {
+    width: 100%;
+  }
+  .bottom-anchor-slot .gam-ad-inner,
+  .bottom-anchor-slot .gam-ad-placeholder {
+    max-width: 320px;
+    min-height: 50px;
+  }
+}
+
+@media (max-width: 420px) {
+  .container {
+    width: min(calc(100% - 24px), var(--max));
+  }
+  .brand > span:last-child {
+    font-size: 1rem;
+  }
+  .hero h1,
+  .hero-copy h1 {
+    font-size: clamp(2.35rem, 11.5vw, 3.05rem);
+  }
+  .eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+  }
+}
