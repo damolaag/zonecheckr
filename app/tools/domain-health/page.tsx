@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DomainHealthChecker } from "@/components/DomainHealthChecker";
 
+import { AdSlot } from "@/components/AdSlot";
 export const metadata: Metadata = {
   title: "Domain Health Checker — DNS, Email, SSL & HTTPS | ZoneCheckr",
   description: "Run a combined domain health check covering DNS, IPv6, nameservers, SOA, MX, SPF, DMARC, DKIM, CAA, SSL and HTTPS.",
@@ -14,7 +15,7 @@ export default function Page() {
         <h1>Domain Health Checker</h1>
         <p>Run DNS, email authentication, certificate and HTTPS checks from one screen. ZoneCheckr separates required failures from optional configuration information.</p>
       </div>
-      <DomainHealthChecker />
+      <DomainHealthChecker /><AdSlot slotId="tool-mid-content" className="tool-inline-ad" />
       
       <article className="article-card">
         <h2>What does Domain Health check?</h2>

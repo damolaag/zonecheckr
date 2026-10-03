@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { EmailSecurityChecker } from "@/components/EmailSecurityChecker";
 
+import { AdSlot } from "@/components/AdSlot";
 export const metadata: Metadata = {
   title: "SPF, DKIM & DMARC Checker — Email Security | ZoneCheckr",
   description: "Check SPF, DMARC, DKIM and MX records for a domain and inspect common email authentication settings.",
@@ -14,7 +15,7 @@ export default function Page() {
         <h1>SPF, DKIM & DMARC Checker</h1>
         <p>Inspect the DNS records used to authenticate domain email. Check SPF and DMARC automatically, and optionally provide a DKIM selector.</p>
       </div>
-      <EmailSecurityChecker />
+      <EmailSecurityChecker /><AdSlot slotId="tool-mid-content" className="tool-inline-ad" />
       
       <article className="article-card">
         <h2>Why these records matter</h2>

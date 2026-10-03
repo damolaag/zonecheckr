@@ -4,19 +4,44 @@ import { siteConfig } from "@/lib/site";
 export function Footer() {
   return (
     <footer className="site-footer">
-      <div className="container footer-inner">
-        <div>
-          <strong>{siteConfig.name}</strong>
+      <div className="container footer-main">
+        <div className="footer-brand-block">
+          <Link href="/" className="brand" aria-label={`${siteConfig.name} home`}>
+            <span className="brand-mark" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
+            <span>{siteConfig.name}</span>
+          </Link>
           <p>{siteConfig.tagline}</p>
-          <small className="muted-copy">© {new Date().getFullYear()} ZoneCheckr.com</small>
         </div>
-        <div className="footer-links">
-          <Link href="/tools">Tools</Link>
-          <Link href="/about">About</Link>
-          <Link href="/contact">Contact</Link>
-          <Link href="/privacy">Privacy</Link>
-          <Link href="/terms">Terms</Link>
+
+        <div className="footer-nav-groups">
+          <div>
+            <span className="footer-label">Tools</span>
+            <Link href="/tools/domain-health">Domain Health</Link>
+            <Link href="/tools/dns-lookup">DNS Lookup</Link>
+            <Link href="/tools/dns-propagation">DNS Propagation</Link>
+            <Link href="/tools/ssl-checker">SSL Checker</Link>
+          </div>
+          <div>
+            <span className="footer-label">Resources</span>
+            <Link href="/guides">Guides</Link>
+            <Link href="/services">Services</Link>
+            <Link href="/about">About</Link>
+            <Link href="/contact">Contact</Link>
+          </div>
+          <div>
+            <span className="footer-label">Legal</span>
+            <Link href="/privacy">Privacy</Link>
+            <Link href="/terms">Terms</Link>
+          </div>
         </div>
+      </div>
+      <div className="container footer-bottom">
+        <span>© {new Date().getFullYear()} ZoneCheckr · free to use, supported by ads</span>
+        <span className="footer-status"><i /> all check regions operational</span>
       </div>
     </footer>
   );

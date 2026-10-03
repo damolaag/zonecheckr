@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PropagationChecker } from "@/components/PropagationChecker";
 
+import { AdSlot } from "@/components/AdSlot";
 export const metadata: Metadata = {
   title: "DNS Propagation Checker — Global DNS Map",
   description: "Check DNS propagation from multiple countries and see regional DNS results on a live world map.",
@@ -14,7 +15,7 @@ export default function DnsPropagationPage() {
         <h1>DNS Propagation Checker</h1>
         <p>Run live DNS checks from multiple countries and see where your new record is already visible on the map.</p>
       </div>
-      <PropagationChecker />
+      <PropagationChecker /><AdSlot slotId="tool-mid-content" className="tool-inline-ad" />
       
       <article className="article-card">
         <h2>What does DNS propagation mean?</h2>

@@ -1,20 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 type Theme = "dark" | "light";
 
 function readTheme(): Theme {
   if (typeof document === "undefined") return "light";
-  return document.documentElement.dataset.theme === "light" ? "light" : "dark";
+  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+}
+
+function subscribe(onStoreChange: () => void) {
+  if (typeof window === "undefined") return () => {};
+  window.addEventListener("storage", onStoreChange);
+  window.addEventListener("zonecheckr-theme-change", onStoreChange);
+  return () => {
+    window.removeEventListener("storage", onStoreChange);
+    window.removeEventListener("zonecheckr-theme-change", onStoreChange);
+  };
 }
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("light");
-
-  useEffect(() => {
-    setTheme(readTheme());
-  }, []);
+  const theme = useSyncExternalStore(subscribe, readTheme, () => "light" as Theme);
 
   function setPageTheme(next: Theme) {
     document.documentElement.dataset.theme = next;
@@ -22,9 +28,9 @@ export function ThemeToggle() {
     try {
       localStorage.setItem("zonecheckr-theme", next);
     } catch {
-      // Theme switching should still work when storage is unavailable.
+      // Theme switching still works when storage is unavailable.
     }
-    setTheme(next);
+    window.dispatchEvent(new Event("zonecheckr-theme-change"));
   }
 
   const nextTheme: Theme = theme === "dark" ? "light" : "dark";
@@ -37,9 +43,7 @@ export function ThemeToggle() {
       aria-label={`Switch to ${nextTheme} mode`}
       title={`Switch to ${nextTheme} mode`}
     >
-      <span className={`theme-switch-track ${theme}`} aria-hidden="true">
-        <span className="theme-switch-thumb">{theme === "dark" ? "☾" : "☀"}</span>
-      </span>
+      <span className="theme-half-dot" aria-hidden="true" />
       <span className="theme-switch-text">{theme === "dark" ? "Dark" : "Light"}</span>
     </button>
   );

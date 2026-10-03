@@ -16,8 +16,12 @@ const SLOT_ID_MAP: Record<string, string> = {
   // Banner 2: reserved for the second homepage placement
   "home-lower-leaderboard": "div-gpt-ad-1790180731446-0",
   "homepage-lower": "div-gpt-ad-1790180731446-0",
-  "tool-mid-content": "div-gpt-ad-1790006153357-0",
-  "guide-mid-content": "div-gpt-ad-1790006153357-0",
+  // Banner 3 inline placement used on individual tool and guide pages.
+  // It uses a unique div id so it can coexist with the Banner 3 bottom anchor.
+  "tool-mid-content": "div-gpt-ad-1790006153357-inline-0",
+  "guide-mid-content": "div-gpt-ad-1790006153357-inline-0",
+
+  // Banner 3 bottom anchor keeps the exact partner-provided div id.
   "bottom-anchor": "div-gpt-ad-1790006153357-0",
 };
 

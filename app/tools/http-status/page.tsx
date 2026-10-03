@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { HttpStatusChecker } from "@/components/HttpStatusChecker";
 
+import { AdSlot } from "@/components/AdSlot";
 export const metadata: Metadata = {
   title: "HTTP Status Checker — Test Status Codes & Redirects",
   description: "Check a website's HTTP status code, redirect destination, response time and basic response headers.",
@@ -14,7 +15,7 @@ export default function HttpStatusPage() {
         <h1>HTTP Status Checker</h1>
         <p>See whether a page returns 200, redirects somewhere else, or is failing with a 4xx or 5xx response.</p>
       </div>
-      <HttpStatusChecker />
+      <HttpStatusChecker /><AdSlot slotId="tool-mid-content" className="tool-inline-ad" />
       
       <article className="article-card">
         <h2>Common HTTP status codes</h2>

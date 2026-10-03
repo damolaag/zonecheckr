@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { IpCard } from "@/components/IpCard";
 
+import { AdSlot } from "@/components/AdSlot";
 export const metadata: Metadata = {
   title: "What's My IP? — Find Your Public IP Address",
   description: "See the public IP address used by your browser to connect to this website.",
@@ -16,10 +17,10 @@ export default async function WhatIsMyIpPage() {
     <div className="container tool-page">
       <div className="tool-page-heading">
         <span className="eyebrow">Network tool</span>
-        <h1>What's My IP?</h1>
+        <h1>What&apos;s My IP?</h1>
         <p>Quickly see the public IP address your browser is presenting to this website.</p>
       </div>
-      <IpCard ip={ip} />
+      <IpCard ip={ip} /><AdSlot slotId="tool-mid-content" className="tool-inline-ad" />
       
       <article className="article-card">
         <h2>Why can your IP address change?</h2>

@@ -71,6 +71,13 @@ window.updateGptConsentState = function(consentedToAds, consentedToAnalytics) {
   }
 };`;
 
+const gtmScript = `
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-W3BRRPPT');`;
+
 const gptScript = `
 window.googletag = window.googletag || { cmd: [] };
 
@@ -134,6 +141,14 @@ window.googletag.cmd.push(function() {
       sizes: [[728, 90], [320, 100], [320, 50], [300, 100], [300, 50]],
       div: 'div-gpt-ad-1790006153357-0',
       mapping: mappingAnchor
+    },
+    {
+      // Banner 3 is also used as the inline unit on individual tool/guide pages.
+      // A separate div id prevents a duplicate-id/GPT collision with the anchor.
+      path: '/23043164651/zonecheckr_banner3',
+      sizes: [[970, 90], [728, 90], [336, 280], [300, 250], [320, 100], [320, 50], [300, 100], [300, 50], 'fluid'],
+      div: 'div-gpt-ad-1790006153357-inline-0',
+      mapping: mappingBody
     }
   ];
 
@@ -223,6 +238,7 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script dangerouslySetInnerHTML={{ __html: consentScript }} />
+        <script dangerouslySetInnerHTML={{ __html: gtmScript }} />
         <script
           async
           src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"
@@ -230,7 +246,16 @@ export default function RootLayout({
         />
         <script dangerouslySetInnerHTML={{ __html: gptScript }} />
       </head>
-      <body>
+      <body suppressHydrationWarning>
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-W3BRRPPT"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+            title="Google Tag Manager"
+          />
+        </noscript>
         <Header />
         <main>{children}</main>
         <Footer />
