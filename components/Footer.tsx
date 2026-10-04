@@ -6,13 +6,9 @@ export function Footer() {
     <footer className="site-footer">
       <div className="container footer-main">
         <div className="footer-brand-block">
-          <Link href="/" className="brand" aria-label={`${siteConfig.name} home`}>
-            <span className="brand-mark" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </span>
-            <span>{siteConfig.name}</span>
+          <Link href="/" className="brand brand-logo-link" aria-label={`${siteConfig.name} home`}>
+            <img src="/brand/zonecheckr-lockup-light.svg" alt="ZoneCheckr" className="brand-logo brand-logo-light" />
+            <img src="/brand/zonecheckr-lockup-dark.svg" alt="ZoneCheckr" className="brand-logo brand-logo-dark" />
           </Link>
           <p>{siteConfig.tagline}</p>
         </div>

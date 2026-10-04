@@ -24,6 +24,11 @@ export const metadata: Metadata = {
     title: `${siteConfig.name} — DNS & Domain Diagnostic Tools`,
     description: siteConfig.description,
   },
+  icons: {
+    icon: "/brand/favicon.svg",
+    shortcut: "/brand/favicon.svg",
+    apple: "/brand/favicon-192.png",
+  },
 };
 
 const themeScript = `
@@ -70,6 +75,7 @@ window.updateGptConsentState = function(consentedToAds, consentedToAnalytics) {
     });
   }
 };`;
+
 
 const gtmScript = `
 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -182,13 +188,11 @@ window.googletag.cmd.push(function() {
     }, 150);
   });
 
-  window.googletag.pubads().enableSingleRequest();
-  window.googletag.pubads().enableLazyLoad({
-    fetchMarginPercent: 200,
-    renderMarginPercent: 50,
-    mobileScaling: 2.0
-  });
-
+  // Intentionally avoid GPT lazy loading here. Each mounted AdSlot calls
+  // googletag.display() immediately so banner 1, banner 2, inline units and
+  // the bottom anchor can request inventory as soon as their DOM node exists.
+  // This also prevents lower-page units from waiting several minutes for a
+  // lazy-load viewport threshold.
   window.googletag.pubads().setTargeting('sections', ['all']);
   window.googletag.pubads().collapseEmptyDivs(true);
   window.googletag.enableServices();
