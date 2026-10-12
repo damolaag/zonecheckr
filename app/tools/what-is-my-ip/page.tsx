@@ -25,7 +25,7 @@ export default async function WhatIsMyIpPage() {
       <article className="article-card">
         <h2>Why can your IP address change?</h2>
         <p>Your ISP can assign a dynamic address, and VPNs, corporate gateways, mobile networks and proxies can make websites see a different public IP than the address used inside your home or office network.</p>
-      </article>
+      </article><AdSlot slotId="tool-end-content" className="tool-end-ad" />
     </div>
   );
 }

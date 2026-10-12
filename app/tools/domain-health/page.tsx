@@ -20,7 +20,7 @@ export default function Page() {
       <article className="article-card">
         <h2>What does Domain Health check?</h2>
         <p>The checker inspects A, AAAA, NS and SOA records, mail routing, SPF, DMARC and optional DKIM, CAA certificate policy, TLS certificate health, and the domain&apos;s HTTPS response. Results are individual checks rather than an arbitrary overall score.</p>
-      </article>
+      </article><AdSlot slotId="tool-end-content" className="tool-end-ad" />
     </div>
   );
 }

@@ -5,8 +5,8 @@ import { useSyncExternalStore } from "react";
 type Theme = "dark" | "light";
 
 function readTheme(): Theme {
-  if (typeof document === "undefined") return "light";
-  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+  if (typeof document === "undefined") return "dark";
+  return document.documentElement.dataset.theme === "light" ? "light" : "dark";
 }
 
 function subscribe(onStoreChange: () => void) {
@@ -20,7 +20,7 @@ function subscribe(onStoreChange: () => void) {
 }
 
 export function ThemeToggle() {
-  const theme = useSyncExternalStore(subscribe, readTheme, () => "light" as Theme);
+  const theme = useSyncExternalStore(subscribe, readTheme, () => "dark" as Theme);
 
   function setPageTheme(next: Theme) {
     document.documentElement.dataset.theme = next;

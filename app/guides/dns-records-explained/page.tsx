@@ -60,7 +60,7 @@ export default function DnsRecordsGuide() {
           wrong provider, changes made in a different DNS dashboard may have no effect.
         </p>
 
-        <div className="article-cta">
+        <AdSlot slotId="guide-end-content" className="guide-end-ad" /><div className="article-cta">
           <h2>Check your domain now</h2>
           <p>Use the DNS Lookup tool to see the records currently published for your domain.</p>
           <Link href="/tools/dns-lookup" className="button button-primary">

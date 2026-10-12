@@ -21,7 +21,7 @@ export default function DnsPropagationPage() {
         <h2>What does DNS propagation mean?</h2>
         <p>When a DNS record changes, recursive resolvers can keep the previous value until its cached TTL expires. During that window, users in different networks can receive different DNS answers.</p>
         <p>ZoneCheckr uses distributed probes to sample DNS resolution from different countries. Enter an expected value when you know the new record you are waiting for; otherwise, the map compares each result with the most common answer in the measurement.</p>
-      </article>
+      </article><AdSlot slotId="tool-end-content" className="tool-end-ad" />
     </div>
   );
 }

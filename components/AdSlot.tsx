@@ -1,79 +1,94 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { AD_PLACEMENTS, type AdPlacement } from "@/lib/ads";
 
 type AdSlotProps = {
   className?: string;
   label?: boolean;
-  slotId?: string;
+  slotId: AdPlacement;
 };
 
-const SLOT_ID_MAP: Record<string, string> = {
-  // Banner 1: first homepage ad slot directly below the header
-  "home-top-leaderboard": "div-gpt-ad-1790006377572-0",
-  "homepage-top": "div-gpt-ad-1790006377572-0",
+type Size = [number, number] | "fluid";
 
-  // Banner 2: reserved for the second homepage placement
-  "home-lower-leaderboard": "div-gpt-ad-1790180731446-0",
-  "homepage-lower": "div-gpt-ad-1790180731446-0",
-  // Banner 3 inline placement used on individual tool and guide pages.
-  // It uses a unique div id so it can coexist with the Banner 3 bottom anchor.
-  "tool-mid-content": "div-gpt-ad-1790006153357-inline-0",
-  "guide-mid-content": "div-gpt-ad-1790006153357-inline-0",
-
-  // Banner 3 bottom anchor keeps the exact partner-provided div id.
-  "bottom-anchor": "div-gpt-ad-1790006153357-0",
+type GptSlot = {
+  getSlotElementId(): string;
+  defineSizeMapping(mapping: unknown): GptSlot;
+  addService(service: unknown): GptSlot;
 };
 
-type GptWindow = Window & {
-  googletag?: {
-    cmd: Array<() => void>;
-    display?: (divId: string) => void;
+type GoogleTag = {
+  cmd: Array<() => void>;
+  pubads(): { getSlots(): GptSlot[] };
+  sizeMapping(): {
+    addSize(viewport: [number, number], sizes: Size[]): ReturnType<GoogleTag["sizeMapping"]>;
+    build(): unknown;
   };
-  gptTrackingEngine?: {
-    observeSlot?: (divId: string) => void;
+  defineSlot(path: string, sizes: Size[], divId: string): GptSlot | null;
+  destroySlots(slots: GptSlot[]): boolean;
+  display(divId: string): void;
+};
+
+type AdsWindow = Window & {
+  googletag?: GoogleTag;
+  zcAds?: {
+    register(slot: GptSlot): void;
+    unregister(divId: string): void;
   };
 };
 
-export function AdSlot({
-  className = "",
-  label = true,
-  slotId = "tool-mid-content",
-}: AdSlotProps) {
-  const gptDivId = useMemo(() => {
-    if (slotId.startsWith("div-gpt-ad-")) return slotId;
-    return SLOT_ID_MAP[slotId] || "div-gpt-ad-1790006153357-0";
-  }, [slotId]);
+function PlacedAd({ className = "", label = true, slotId }: AdSlotProps) {
+  const config = AD_PLACEMENTS[slotId];
 
   useEffect(() => {
-    const gptWindow = window as GptWindow;
+    const w = window as AdsWindow;
+    w.googletag = w.googletag || ({ cmd: [] } as unknown as GoogleTag);
 
-    gptWindow.googletag = gptWindow.googletag || { cmd: [] };
+    let slot: GptSlot | null = null;
+    let cancelled = false;
 
-    gptWindow.googletag.cmd.push(() => {
-      const element = document.getElementById(gptDivId);
+    w.googletag.cmd.push(() => {
+      const googletag = w.googletag!;
+      if (cancelled || !document.getElementById(config.divId)) return;
 
-      // Avoid duplicate display() calls during development/React remounts.
-      if (element && element.dataset.gptDisplayed !== "true") {
-        gptWindow.googletag?.display?.(gptDivId);
-        element.dataset.gptDisplayed = "true";
-      }
+      // A slot left over from a previous page would block the new request.
+      const stale = googletag.pubads().getSlots().filter((s) => s.getSlotElementId() === config.divId);
+      if (stale.length) googletag.destroySlots(stale);
 
-      gptWindow.gptTrackingEngine?.observeSlot?.(gptDivId);
+      const mapping = googletag.sizeMapping();
+      for (const [viewport, sizes] of config.mapping) mapping.addSize(viewport, sizes);
+
+      slot = googletag.defineSlot(config.path, config.sizes, config.divId);
+      if (!slot) return;
+      slot.defineSizeMapping(mapping.build()).addService(googletag.pubads());
+      w.zcAds?.register(slot);
+      googletag.display(config.divId);
     });
-  }, [gptDivId]);
+
+    return () => {
+      cancelled = true;
+      w.googletag?.cmd.push(() => {
+        if (!slot) return;
+        w.zcAds?.unregister(slot.getSlotElementId());
+        w.googletag!.destroySlots([slot]);
+      });
+    };
+  }, [config]);
 
   return (
     <div className={`gam-ad-slot ${className}`} aria-label="Advertisement">
       <div className="gam-ad-inner">
         {label && <span className="gam-ad-label">Advertisement</span>}
-
-        <div
-          id={gptDivId}
-          className="gam-ad-placeholder"
-          data-ad-slot={slotId}
-        />
+        <div id={config.divId} className="gam-ad-placeholder" data-ad-slot={slotId} />
       </div>
     </div>
   );
+}
+
+// Keyed on the route so every page view (including the persistent bottom
+// anchor) destroys the old slot and requests a fresh ad.
+export function AdSlot(props: AdSlotProps) {
+  const pathname = usePathname();
+  return <PlacedAd key={pathname} {...props} />;
 }

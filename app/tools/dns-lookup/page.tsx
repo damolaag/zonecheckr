@@ -40,7 +40,7 @@ export default function DnsLookupPage() {
         <Link href="/guides/dns-records-explained" className="text-link">
           Learn what each DNS record means →
         </Link>
-      </article>
+      </article><AdSlot slotId="tool-end-content" className="tool-end-ad" />
     </div>
   );
 }

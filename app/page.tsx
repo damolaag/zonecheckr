@@ -178,6 +178,16 @@ export default function Home() {
       </section>
 
       {/* ======================================================
+          THIRD HOMEPAGE GAM AD SLOT
+          Just before "Start with a complete domain health check".
+      ====================================================== */}
+      <section className="homepage-health-ad-section">
+        <div className="container">
+          <AdSlot slotId="homepage-health" className="homepage-health-ad" />
+        </div>
+      </section>
+
+      {/* ======================================================
           DOMAIN HEALTH FEATURE
       ====================================================== */}
       <section className="section section-soft">

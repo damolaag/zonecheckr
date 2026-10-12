@@ -20,7 +20,7 @@ export default function HttpStatusPage() {
       <article className="article-card">
         <h2>Common HTTP status codes</h2>
         <p><strong>200</strong> means the request succeeded. <strong>301/308</strong> usually mean a permanent redirect, while <strong>302/307</strong> are temporary redirects. <strong>404</strong> means the page was not found and <strong>5xx</strong> codes point to a server-side failure.</p>
-      </article>
+      </article><AdSlot slotId="tool-end-content" className="tool-end-ad" />
     </div>
   );
 }

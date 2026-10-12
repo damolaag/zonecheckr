@@ -20,7 +20,7 @@ export default function Page() {
       <article className="article-card">
         <h2>Why these records matter</h2>
         <p>SPF defines which servers may send mail for a domain, DKIM adds a cryptographic signature to messages, and DMARC tells receiving systems how to handle messages that fail authentication. ZoneCheckr reports what is published; it does not send test emails.</p>
-      </article>
+      </article><AdSlot slotId="tool-end-content" className="tool-end-ad" />
     </div>
   );
 }
