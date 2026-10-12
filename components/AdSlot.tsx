@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { AD_PLACEMENTS, type AdPlacement } from "@/lib/ads";
 
@@ -8,6 +8,9 @@ type AdSlotProps = {
   className?: string;
   label?: boolean;
   slotId: AdPlacement;
+  // Stays mounted across pages (the bottom anchor). Refreshed on each route
+  // change instead of being destroyed and redefined.
+  persistent?: boolean;
 };
 
 type Size = [number, number] | "fluid";
@@ -33,12 +36,13 @@ type GoogleTag = {
 type AdsWindow = Window & {
   googletag?: GoogleTag;
   zcAds?: {
-    register(slot: GptSlot): void;
+    register(slot: GptSlot, alwaysInView?: boolean): void;
     unregister(divId: string): void;
+    refreshNow(divId: string): void;
   };
 };
 
-function PlacedAd({ className = "", label = true, slotId }: AdSlotProps) {
+function PlacedAd({ className = "", label = true, slotId, persistent = false }: AdSlotProps) {
   const config = AD_PLACEMENTS[slotId];
 
   useEffect(() => {
@@ -62,7 +66,7 @@ function PlacedAd({ className = "", label = true, slotId }: AdSlotProps) {
       slot = googletag.defineSlot(config.path, config.sizes, config.divId);
       if (!slot) return;
       slot.defineSizeMapping(mapping.build()).addService(googletag.pubads());
-      w.zcAds?.register(slot);
+      w.zcAds?.register(slot, persistent);
       googletag.display(config.divId);
     });
 
@@ -74,7 +78,7 @@ function PlacedAd({ className = "", label = true, slotId }: AdSlotProps) {
         w.googletag!.destroySlots([slot]);
       });
     };
-  }, [config]);
+  }, [config, persistent]);
 
   return (
     <div className={`gam-ad-slot ${className}`} aria-label="Advertisement">
@@ -86,9 +90,23 @@ function PlacedAd({ className = "", label = true, slotId }: AdSlotProps) {
   );
 }
 
-// Keyed on the route so every page view (including the persistent bottom
-// anchor) destroys the old slot and requests a fresh ad.
+// Page placements are keyed on the route, so every page view destroys the old
+// slot and requests a fresh ad. The persistent bottom anchor keeps its slot and
+// is refreshed on each route change instead: a refresh starts a new page view
+// in GAM, which a destroy-and-redefine within the same page view does not, and
+// it runs in a layout effect so it happens before the new page's slots load.
 export function AdSlot(props: AdSlotProps) {
   const pathname = usePathname();
+  const firstPath = useRef(pathname);
+
+  useLayoutEffect(() => {
+    if (!props.persistent || pathname === firstPath.current) return;
+    firstPath.current = "";
+    const w = window as AdsWindow;
+    const divId = AD_PLACEMENTS[props.slotId].divId;
+    w.googletag?.cmd.push(() => w.zcAds?.refreshNow(divId));
+  }, [pathname, props.persistent, props.slotId]);
+
+  if (props.persistent) return <PlacedAd {...props} />;
   return <PlacedAd key={pathname} {...props} />;
 }

@@ -3076,3 +3076,17 @@ body { padding-bottom: 100px; }
 @media (max-width: 640px) {
   .guide-grid { grid-template-columns: minmax(0, 1fr) !important; }
 }
+
+/* An unfilled anchor stays fully hidden (no invisible strip blocking clicks at
+   the bottom of the page) while it waits to retry. */
+.bottom-anchor-slot[data-ad-state="empty"],
+.bottom-anchor-slot[data-ad-state="refilling"] { display: none !important; }
+
+/* Desktop guides: widen the article card so a 970px ad fits inside it, while
+   the text keeps its previous line length. Phones and tablets are unchanged. */
+@media (min-width: 1200px) {
+  .guide-page .article-card { max-width: 1040px; }
+  .guide-page .article-card > :not(.gam-ad-slot) { max-width: 852px; }
+  .guide-page .article-card > .gam-ad-slot .gam-ad-inner,
+  .guide-page .article-card > .gam-ad-slot .gam-ad-placeholder { max-width: 970px; }
+}

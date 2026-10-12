@@ -30,11 +30,27 @@ const BODY_MAPPING: SizeMapping = [
   [[0, 0], [[300, 250], [320, 100], [320, 50], [300, 100], [300, 50], "fluid"]],
 ];
 
-// Lower in-article placement: medium rectangle at most, so it never feels
-// heavier than the content around it.
-const SECONDARY_MAPPING: SizeMapping = [
+// Guide articles sit in a content card that only fits a 970-wide ad on
+// screens 1200px and wider, so 970x90 starts there instead of at 1024px.
+// Below 1024px this is identical to BODY_MAPPING.
+const GUIDE_BODY_MAPPING: SizeMapping = [
+  [[1200, 0], [[970, 90], [728, 90], [300, 250], [300, 100], [320, 100], [320, 50], [300, 50], "fluid"]],
+  [[1024, 0], [[728, 90], [300, 250], [300, 100], [320, 100], [320, 50], [300, 50], "fluid"]],
+  ...BODY_MAPPING.slice(1),
+];
+
+// Second placement near the end of tool and guide pages. Desktop takes every
+// format including 970x90 and fluid; tablet and phone sizes are unchanged.
+const SECONDARY_DESKTOP: Size[] = [[970, 90], [728, 90], [336, 280], [300, 250], [320, 100], [300, 100], [320, 50], [300, 50], "fluid"];
+const SECONDARY_TABLET_AND_PHONE: SizeMapping = [
   [[768, 0], [[728, 90], [300, 250], [336, 280], [320, 100], [300, 100], [320, 50], [300, 50]]],
   [[0, 0], [[300, 250], [320, 100], [300, 100], [320, 50], [300, 50]]],
+];
+const SECONDARY_MAPPING: SizeMapping = [[[1024, 0], SECONDARY_DESKTOP], ...SECONDARY_TABLET_AND_PHONE];
+const GUIDE_SECONDARY_MAPPING: SizeMapping = [
+  [[1200, 0], SECONDARY_DESKTOP],
+  [[1024, 0], SECONDARY_DESKTOP.filter((size) => size === "fluid" || size[0] !== 970)],
+  ...SECONDARY_TABLET_AND_PHONE,
 ];
 
 // Bottom anchor: compact so it never covers much of the tool UI.
@@ -71,10 +87,10 @@ export const AD_PLACEMENTS = {
   "homepage-health": placement("zonecheckr_banner2", "div-gpt-ad-1790180731446-1", BODY_MAPPING),
   // Individual tool and guide pages, first in-content placement.
   "tool-mid-content": placement("zonecheckr_banner3", "div-gpt-ad-1790006153357-inline-0", BODY_MAPPING),
-  "guide-mid-content": placement("zonecheckr_banner3", "div-gpt-ad-1790006153357-inline-0", BODY_MAPPING),
+  "guide-mid-content": placement("zonecheckr_banner3", "div-gpt-ad-1790006153357-inline-0", GUIDE_BODY_MAPPING),
   // Individual tool and guide pages, second placement near the end of content.
   "tool-end-content": placement("zonecheckr_banner2", "div-gpt-ad-1790180731446-end-0", SECONDARY_MAPPING),
-  "guide-end-content": placement("zonecheckr_banner2", "div-gpt-ad-1790180731446-end-0", SECONDARY_MAPPING),
+  "guide-end-content": placement("zonecheckr_banner2", "div-gpt-ad-1790180731446-end-0", GUIDE_SECONDARY_MAPPING),
   // Fixed bottom anchor, keeps the partner-provided div id.
   "bottom-anchor": placement("zonecheckr_banner3", "div-gpt-ad-1790006153357-0", ANCHOR_MAPPING),
 } satisfies Record<string, AdPlacementConfig>;

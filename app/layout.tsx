@@ -99,17 +99,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-W3BRRPPT');`;
 
 // GPT page setup and viewability-based refresh.
-// Slots are defined, displayed and destroyed by <AdSlot>, which remounts on
-// every route change, so each page view gets fresh ad requests (including the
-// bottom anchor). A slot is only refreshed after it has been at least 50% in
-// view for 30 seconds of visible-tab time; slots scrolled out of view keep
-// their current ad instead of going blank. Add ?adsdebug=1 to log activity.
+// Page slots are defined, displayed and destroyed by <AdSlot>, which remounts
+// on every route change, so each page view gets fresh ad requests. The bottom
+// anchor stays mounted and is refreshed on each route change. Otherwise a slot
+// is only refreshed after it has been at least 50% in view for 60 seconds of
+// visible-tab time; slots scrolled out of view keep their current ad instead
+// of going blank. An unfilled slot retries at most 3 times per page, 60
+// seconds apart. Add ?adsdebug=1 to log activity.
 const gptScript = `
 window.googletag = window.googletag || { cmd: [] };
 
 window.zcAds = window.zcAds || (function() {
-  var REFRESH_AFTER_MS = 30000;
-  var EMPTY_RETRY_MS = 15000;
+  var REFRESH_AFTER_MS = 60000;
+  var EMPTY_RETRY_MS = 60000;
+  var MAX_EMPTY_RETRIES = 3;
   var STUCK_MS = 20000;
   var TICK_MS = 1000;
   var debug = /[?&]adsdebug=1/.test(location.search);
@@ -134,8 +137,10 @@ window.zcAds = window.zcAds || (function() {
         if (now - s.pendingSince > STUCK_MS) s.pendingSince = 0;
         return;
       }
-      if (s.inView >= 50) s.visibleMs += TICK_MS;
+      if (s.empty && s.emptyRetries >= MAX_EMPTY_RETRIES) return;
+      if (s.alwaysInView || s.inView >= 50) s.visibleMs += TICK_MS;
       if (s.visibleMs >= (s.empty ? EMPTY_RETRY_MS : REFRESH_AFTER_MS)) {
+        if (s.empty) s.emptyRetries++;
         s.visibleMs = 0;
         s.pendingSince = now;
         log('refresh', divId);
@@ -146,11 +151,24 @@ window.zcAds = window.zcAds || (function() {
 
   return {
     started: false,
-    register: function(slot) {
+    // alwaysInView: fixed placements (the bottom anchor) count as on screen,
+    // so an unfilled anchor keeps retrying even while it is hidden.
+    register: function(slot, alwaysInView) {
       slots[slot.getSlotElementId()] = {
         slot: slot, inView: 0, visibleMs: 0, rendered: false,
-        filled: false, empty: false, pendingSince: 0
+        filled: false, empty: false, emptyRetries: 0, pendingSince: 0,
+        alwaysInView: !!alwaysInView
       };
+    },
+    // Fresh ad for a slot right now, e.g. the anchor on a route change.
+    refreshNow: function(divId) {
+      var s = slots[divId];
+      if (!s || !window.googletag.pubadsReady) return;
+      s.visibleMs = 0;
+      s.emptyRetries = 0;
+      s.pendingSince = Date.now();
+      log('refresh (route change)', divId);
+      window.googletag.pubads().refresh([s.slot]);
     },
     unregister: function(divId) { delete slots[divId]; },
     start: function() {
@@ -166,7 +184,10 @@ window.zcAds = window.zcAds || (function() {
         s.pendingSince = 0;
         s.visibleMs = 0;
         s.empty = e.isEmpty;
-        if (!e.isEmpty) s.filled = true;
+        if (!e.isEmpty) {
+          s.filled = true;
+          s.emptyRetries = 0;
+        }
         var wrapper = wrapperOf(divId);
         if (wrapper) wrapper.setAttribute('data-ad-state', e.isEmpty ? (s.filled ? 'refilling' : 'empty') : 'filled');
         log('render', divId, e.isEmpty ? 'empty' : e.size);
